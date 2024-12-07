@@ -24,3 +24,5 @@ Ce projet met en œuvre une architecture basée sur des microservices, avec les 
 - **Gateway** : `http://localhost:9090`
 - **MS1 (Customers)** : `http://localhost:9091`
 - **MS2 (Bills)** : `http://localhost:9092`
+ms-tp.postman_collection.json contient la collection pour tester
+  
