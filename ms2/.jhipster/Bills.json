@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20241207004303"
+  },
+  "clientRootFolder": "ms2",
+  "databaseType": "sql",
+  "dto": "no",
+  "fields": [
+    {
+      "fieldName": "amount",
+      "fieldType": "Double",
+      "fieldValidateRules": []
+    },
+    {
+      "fieldName": "billDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": []
+    },
+    {
+      "fieldName": "customerId",
+      "fieldType": "Long"
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "ms2",
+  "name": "Bills",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

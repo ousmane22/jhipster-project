@@ -1,0 +1,213 @@
+services:
+  gateway:
+    image: gateway
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_R2DBC_URL=r2dbc:mysql://gateway-mariadb:3306/gateway?useLegacyDatetimeCode=false
+      - SPRING_LIQUIBASE_URL=jdbc:mariadb://gateway-mariadb:3306/gateway?useLegacyDatetimeCode=false
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    ports:
+      - 8080:9090
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:9090/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      gateway-mariadb:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  gateway-mariadb:
+    image: mariadb:11.5.2
+    volumes:
+      - ./config/mariadb:/etc/mariadb/conf.d
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_DATABASE=gateway
+    command: mariadbd --lower_case_table_names=1 --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    healthcheck:
+      test:
+        - CMD
+        - /usr/local/bin/healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    labels:
+      org.springframework.boot.ignore: true
+
+  ms1:
+    image: ms1
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://ms1-mariadb:3306/ms1?useLegacyDatetimeCode=false
+      - SPRING_LIQUIBASE_URL=jdbc:mariadb://ms1-mariadb:3306/ms1?useLegacyDatetimeCode=false
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    ports:
+      - 9091:9091
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:9091/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      ms1-mariadb:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  ms1-mariadb:
+    image: mariadb:11.5.2
+    volumes:
+      - ./config/mariadb:/etc/mariadb/conf.d
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_DATABASE=ms1
+    command: mariadbd --lower_case_table_names=1 --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    healthcheck:
+      test:
+        - CMD
+        - /usr/local/bin/healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ms2:
+    image: ms2
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://ms2-mariadb:3306/ms2?useLegacyDatetimeCode=false
+      - SPRING_LIQUIBASE_URL=jdbc:mariadb://ms2-mariadb:3306/ms2?useLegacyDatetimeCode=false
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    ports:
+      - 9092:9092
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:9092/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      ms2-mariadb:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      jhipster-registry:
+        condition: service_healthy
+  ms2-mariadb:
+    image: mariadb:11.5.2
+    volumes:
+      - ./config/mariadb:/etc/mariadb/conf.d
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_DATABASE=ms2
+    command: mariadbd --lower_case_table_names=1 --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    healthcheck:
+      test:
+        - CMD
+        - /usr/local/bin/healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+
+  jhipster-registry:
+    image: jhipster/jhipster-registry:v7.4.0
+    volumes:
+      - ./central-server-config:/central-config
+    # By default the JHipster Registry runs with the "dev" and "native"
+    # Spring profiles.
+    # "native" profile means the filesystem is used to store data, see
+    # http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev,oauth2
+      - SPRING_SECURITY_USER_PASSWORD=admin
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
+      # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
+      # For Keycloak to work, you need to add '127.0.0.1 keycloak' to your hosts file
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/realms/jhipster
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=jhipster-registry
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=jhipster-registry
+    depends_on:
+      keycloak:
+        condition: "service_healthy"
+    ports:
+      - 8761:8761
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/management/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    command: "start-dev --import-realm"
+    volumes:
+      - ./realm-config:/opt/keycloak/data/import
+      - ./realm-config/keycloak-health-check.sh:/opt/keycloak/health-check.sh
+    environment:
+      - KC_DB=dev-file
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_FEATURES=scripts
+      - KC_HTTP_PORT=9080
+      - KC_HTTPS_PORT=9443
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_MANAGEMENT_PORT=9990
+    ports:
+      - 9080:9080
+      - 9443:9443
+    healthcheck:
+      test: "bash /opt/keycloak/health-check.sh"
+      interval: 5s
+      timeout: 5s
+      retries: 20
