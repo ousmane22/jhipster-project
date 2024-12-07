@@ -1,0 +1,425 @@
+{
+	"info": {
+		"_postman_id": "e6daf564-3698-4005-aa14-e43d8add44e5",
+		"name": "ms-tp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37269911",
+		"_collection_link": "https://gold-astronaut-737234.postman.co/workspace/a9bc200b-d744-4224-a71e-adcb4806d419/collection/37269911-e6daf564-3698-4005-aa14-e43d8add44e5?action=share&source=collection_link&creator=37269911"
+	},
+	"item": [
+		{
+			"name": "ms1",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Mdou Ndiaye\",\n  \"email\": \"Modou@gmail.com\",\n  \"phone\": \"7777750177\",\n  \"address\": \"Dakar\"\n}"
+						},
+						"url": {
+							"raw": "{{m1_url}}/api/v1/customers",
+							"host": [
+								"{{m1_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.doe@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{ms1_url}}/api/v1/customers/1",
+							"host": [
+								"{{ms1_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update Customer",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Partial\"\n}"
+						},
+						"url": {
+							"raw": "{{ms1_url}}/api/v1/customers/1",
+							"host": [
+								"{{ms1_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ms1_url}}/api/v1/customers",
+							"host": [
+								"{{ms1_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ms1_url}}/api/v1/customers/27185",
+							"host": [
+								"{{ms1_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"27185"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ms1_url}}/api/v1/customers/1",
+							"host": [
+								"{{ms1_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "gateway",
+			"item": [
+				{
+					"name": "ms1-gw",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9090/services/ms1/api/v1/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"services",
+								"ms1",
+								"api",
+								"v1",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ms2-gw",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/services/ms2/api/v1/bills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"services",
+								"ms2",
+								"api",
+								"v1",
+								"bills"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ms2",
+			"item": [
+				{
+					"name": "Create a Bill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"amount\": 90000,\n   \"billDate\": \"2024-12-06\",\n   \"customerId\": 1001\n}"
+						},
+						"url": {
+							"raw": "{{ms2_url}}/api/v1/bills",
+							"host": [
+								"{{ms2_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Bills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ms2_url}}/api/v1/bills",
+							"host": [
+								"{{ms2_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Bill by ID With Customers Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ms2_url}}/api/v1/bills/1",
+							"host": [
+								"{{ms2_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bills",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Bill Copy",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Updated Bill\",\n  \"amount\": 150.75\n}"
+						},
+						"url": {
+							"raw": "{{ms2_url}}/api/v1/bills/:id",
+							"host": [
+								"{{ms2_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bills",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partially Update a Bill Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Partially Updated Bill\"\n}"
+						},
+						"url": {
+							"raw": "{{ms2_url}}/api/v1/bills/:id",
+							"host": [
+								"{{ms2_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bills",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Bill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ms2_url}}/api/v1/bills/:id",
+							"host": [
+								"{{ms2_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bills",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ms1_url",
+			"value": "http://localhost:9091",
+			"type": "default"
+		},
+		{
+			"key": "ms2_url",
+			"value": "http://localhost:9092",
+			"type": "string"
+		},
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:9090",
+			"type": "string"
+		}
+	]
+}
